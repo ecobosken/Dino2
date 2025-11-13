@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="ad.size" content="width=320,height=480">
+  <script type="text/javascript">
+    var clickTag = "https://screvo.network"; // alapértelmezett landing page
+  </script>
+  <title>Dino Run</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+      position: relative;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%; /* a JS fogja felülírni pixelmérettel */
+      background-color: black;
+    }
+    .gameButton {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: blue;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <button id="winButton" class="gameButton">Tovább</button>
+  <button id="restartButton" class="gameButton">Restart</button>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const winButton = document.getElementById("winButton");
+    const restartButton = document.getElementById("restartButton");
+
+    let canvasWidth, canvasHeight, groundY;
+
+    function resizeCanvas() {
+      canvasWidth = window.innerWidth;
+      canvasHeight = window.innerHeight;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+      groundY = canvasHeight * 0.75;
+      player.x = canvasWidth * 0.25;
+      player.y = groundY;
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+
+    const player = { 
+      x: 0, 
+      y: 0, 
+      width: 30, 
+      height: 30, 
+      vy: 0, 
+      jumpPower: -12, 
+      gravity: 0.6, 
+      onGround: true 
+    };
+
+    let obstacles = [];
+    let obstacleTimer = 0;
+    const baseInterval = 90;
+    let obstacleInterval = baseInterval;
+    const obstacleSpeed = 5;
+    let score = 0;
+    let gameWon = false;
+    let gameStarted = false;
+
+    resizeCanvas(); // kezdeti beállítás
+
+    function spawnObstacle() {
+      const baseHeight = player.height * 2;
+      const randomHeight = baseHeight * (0.7 + Math.random() * 0.5); // 70-120%
+      obstacles.push({
+        x: canvasWidth,
+        y: groundY + player.height - randomHeight,
+        width: 20,
+        height: randomHeight
+      });
+    }
+
+    function resetGame() {
+      obstacles = [];
+      score = 0;
+      gameWon = false;
+      gameStarted = false;
+      player.y = groundY;
+      player.vy = 0;
+      player.onGround = true;
+      obstacleTimer = 0;
+      winButton.style.display = "none";
+      restartButton.style.display = "none";
+      positionButtons([]);
+    }
+
+    function positionButtons(buttons) {
+      const spacing = 20;
+      let totalWidth = 0;
+      buttons.forEach(btn => totalWidth += btn.offsetWidth);
+      totalWidth += spacing * (buttons.length - 1);
+      let startX = canvasWidth/2 - totalWidth/2;
+      buttons.forEach(btn => {
+        btn.style.left = `${startX}px`;
+        startX += btn.offsetWidth + spacing;
+      });
+    }
+
+    function update() {
+      if (!gameStarted || gameWon) return;
+
+      player.vy += player.gravity;
+      player.y += player.vy;
+      if (player.y >= groundY) {
+        player.y = groundY;
+        player.vy = 0;
+        player.onGround = true;
+      }
+
+      obstacleTimer++;
+      if (obstacleTimer >= obstacleInterval) {
+        spawnObstacle();
+        obstacleTimer = 0;
+        obstacleInterval = baseInterval * (0.5 + Math.random() * 1);
+      }
+
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const obs = obstacles[i];
+        obs.x -= obstacleSpeed;
+
+        if (
+          player.x < obs.x + obs.width &&
+          player.x + player.width > obs.x &&
+          player.y < obs.y + obs.height &&
+          player.y + player.height > obs.y
+        ) {
+          gameStarted = false;
+          positionButtons([restartButton]);
+          restartButton.style.display = "block";
+          return;
+        }
+
+        if (obs.x + obs.width < player.x && !obs.passed) {
+          obs.passed = true;
+          score++;
+          if (score >= 10 && !gameWon) {
+            gameWon = true;
+            setTimeout(() => {
+              gameStarted = false;
+              winButton.style.display = "block";
+              restartButton.style.display = "block";
+              positionButtons([restartButton, winButton]);
+            }, 500);
+          }
+        }
+
+        if (obs.x + obs.width < 0) obstacles.splice(i,1);
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0,0,canvasWidth,canvasHeight);
+
+      ctx.fillStyle="white";
+      ctx.fillRect(0, groundY + player.height, canvasWidth, 2);
+
+      ctx.fillStyle="green";
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+
+      ctx.fillStyle="red";
+      obstacles.forEach(obs => ctx.fillRect(obs.x, obs.y, obs.width, obs.height));
+
+      ctx.fillStyle = "white";
+      ctx.font = `${Math.floor(canvasHeight * 0.05)}px Arial`; // méret a canvas magasságához
+      ctx.textAlign = "center";
+      ctx.fillText(`${score} pont`, canvasWidth / 2, canvasHeight * 0.1);
+
+    }
+
+    function gameLoop() {
+      update();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+
+    function jump() {
+      if (player.onGround && !gameWon) {
+        player.vy = player.jumpPower;
+        player.onGround = false;
+        gameStarted = true;
+      }
+    }
+
+    document.addEventListener("keydown", jump);
+    document.addEventListener("mousedown", jump);
+    document.addEventListener("touchstart", jump);
+
+    <!--winButton.addEventListener("click", ()=> window.location.href="https://screvo.network");-->
+    winButton.addEventListener("click", () => window.open(window.clickTag, "_blank"));
+    restartButton.addEventListener("click", resetGame);
+
+    gameLoop();
+  </script>
+</body>
+</html>
