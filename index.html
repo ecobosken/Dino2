@@ -2,11 +2,14 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8">
+  
   <meta name="ad.size" content="width=320,height=480">
-  <script type="text/javascript">
-    var clickTag = "https://screvo.network"; // alapértelmezett landing page
+    <script type="text/javascript">
+    var clickTag = "https://screvo.network"; // alapértelmezett landing page, ez az AdWords-nek kell
   </script>
+  
   <title>Dino Run</title>
+  
   <style>
     body {
       margin: 0;
@@ -35,6 +38,7 @@
     }
   </style>
 </head>
+  
 <body>
   <canvas id="gameCanvas"></canvas>
   <button id="winButton" class="gameButton">Tovább</button>
@@ -86,11 +90,11 @@
     let gameWon = false;
     let gameStarted = false;
 
-    resizeCanvas(); // kezdeti beállítás
+    resizeCanvas();
 
     function spawnObstacle() {
-      const baseHeight = 128;
-      const randomHeight = baseHeight * (0.7 + Math.random() * 0.5); // 70-120%
+      const baseHeight = 128; // alapmagasság
+      const randomHeight = baseHeight * (0.7 + Math.random() * 0.5); // random 70-120% magasság
       obstacles.push({
         x: canvasWidth,
         y: groundY + player.height - randomHeight,
@@ -220,4 +224,5 @@
   </script>
 </body>
 </html>
+
 
