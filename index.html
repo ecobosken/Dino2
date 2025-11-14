@@ -140,7 +140,7 @@
       if (obstacleTimer >= obstacleInterval) {
         spawnObstacle();
         obstacleTimer = 0;
-        obstacleInterval = baseInterval * (0.5 + Math.random() * 1);
+        obstacleInterval = baseInterval * (0.6 + Math.random() * 0.9);
       }
 
       for (let i = obstacles.length - 1; i >= 0; i--) {
@@ -220,3 +220,4 @@
   </script>
 </body>
 </html>
+
