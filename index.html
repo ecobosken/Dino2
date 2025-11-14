@@ -45,6 +45,12 @@
     const ctx = canvas.getContext("2d");
     const winButton = document.getElementById("winButton");
     const restartButton = document.getElementById("restartButton");
+    
+    const playerImage = new Image();
+    playerImage.src = "player.png"
+
+    const obsImage = new Image();
+    obsImage.src = "obs.png"
 
     let canvasWidth, canvasHeight, groundY;
 
@@ -63,11 +69,11 @@
     const player = { 
       x: 0, 
       y: 0, 
-      width: 30, 
-      height: 30, 
+      width: 64, 
+      height: 64, 
       vy: 0, 
-      jumpPower: -12, 
-      gravity: 0.6, 
+      jumpPower: -16, 
+      gravity: 0.5, 
       onGround: true 
     };
 
@@ -83,12 +89,12 @@
     resizeCanvas(); // kezdeti beállítás
 
     function spawnObstacle() {
-      const baseHeight = player.height * 2;
+      const baseHeight = 128;
       const randomHeight = baseHeight * (0.7 + Math.random() * 0.5); // 70-120%
       obstacles.push({
         x: canvasWidth,
         y: groundY + player.height - randomHeight,
-        width: 20,
+        width: 64,
         height: randomHeight
       });
     }
@@ -177,11 +183,9 @@
       ctx.fillStyle="white";
       ctx.fillRect(0, groundY + player.height, canvasWidth, 2);
 
-      ctx.fillStyle="green";
-      ctx.fillRect(player.x, player.y, player.width, player.height);
+      ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
 
-      ctx.fillStyle="red";
-      obstacles.forEach(obs => ctx.fillRect(obs.x, obs.y, obs.width, obs.height));
+      obstacles.forEach(obs => ctx.drawImage(obsImage, obs.x, obs.y, obs.width, obs.height));
 
       ctx.fillStyle = "white";
       ctx.font = `${Math.floor(canvasHeight * 0.05)}px Arial`; // méret a canvas magasságához
