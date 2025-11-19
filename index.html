@@ -14,7 +14,7 @@
     body {
       margin: 0;
       overflow: hidden;
-      background-color: #07bcff;
+      background-color: #0089bc;
       position: relative;
     }
     canvas {
@@ -56,6 +56,9 @@
     const obsImage = new Image();
     obsImage.src = "obs.png"
 
+    const groundImage = new Image();
+    groundImage.src = "ground.png";
+
     let canvasWidth, canvasHeight, groundY;
 
     function resizeCanvas() {
@@ -86,6 +89,12 @@
     const baseInterval = 90;
     let obstacleInterval = baseInterval;
     const obstacleSpeed = 5;
+
+    let grounds = [];
+    let groundWidth = 64;
+    let groundHeight = 64;
+    const groundSpeed = obstacleSpeed;
+    
     let score = 0;
     let gameWon = false;
     let gameStarted = false;
@@ -101,6 +110,28 @@
         width: 64,
         height: randomHeight
       });
+    }
+
+    function spawnGround() {
+      grounds.push({
+        x: canvasWidth,
+        y: groundY + player.height - groundHeight,
+        width: groundWidth,
+        height: groundHeight
+        });
+      }
+
+    function updateGrounds() {
+    // Spawn új talaj, ha nincs vagy az utolsó távol van
+      if (grounds.length === 0 || grounds[grounds.length - 1].x < canvasWidth - groundWidth) {
+        spawnGround();
+      }
+
+      for (let i = grounds.length - 1; i >= 0; i--) {
+        const g = grounds[i];
+        g.x -= groundSpeed;
+        if (g.x + g.width < 0) grounds.splice(i, 1);
+      }
     }
 
     function resetGame() {
@@ -131,6 +162,7 @@
 
     function update() {
       if (!gameStarted || gameWon) return;
+      updateGrounds();
 
       player.vy += player.gravity;
       player.y += player.vy;
@@ -184,9 +216,13 @@
     function draw() {
       ctx.clearRect(0,0,canvasWidth,canvasHeight);
 
+      grounds.forEach(g => ctx.drawImage(groundImage, g.x, g.y, g.width, g.height));
+      
+      /*
       ctx.fillStyle="white";
       ctx.fillRect(0, groundY + player.height, canvasWidth, 2);
-
+      */
+      
       ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
 
       obstacles.forEach(obs => ctx.drawImage(obsImage, obs.x, obs.y, obs.width, obs.height));
@@ -224,6 +260,7 @@
   </script>
 </body>
 </html>
+
 
 
 
