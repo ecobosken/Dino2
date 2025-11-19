@@ -216,17 +216,29 @@
     function draw() {
       ctx.clearRect(0,0,canvasWidth,canvasHeight);
 
-      grounds.forEach(g => ctx.drawImage(groundImage, g.x, g.y, g.width, g.height));
+      // Talaj
+      grounds.forEach(g => 
+        ctx.drawImage(
+          groundImage, 
+          g.x, 
+          g.y + player.height, 
+          g.width, 
+          g.height
+        )
+      );
       
-      /*
+      /* Talaj Vonal
       ctx.fillStyle="white";
       ctx.fillRect(0, groundY + player.height, canvasWidth, 2);
       */
       
+      // Játékos
       ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
 
+      // Akadályok
       obstacles.forEach(obs => ctx.drawImage(obsImage, obs.x, obs.y, obs.width, obs.height));
 
+      // Pontok
       ctx.fillStyle = "white";
       ctx.font = `${Math.floor(canvasHeight * 0.05)}px Arial`; // méret a canvas magasságához
       ctx.textAlign = "center";
@@ -252,7 +264,9 @@
     document.addEventListener("mousedown", jump);
     document.addEventListener("touchstart", jump);
 
-    <!--winButton.addEventListener("click", ()=> window.location.href="https://screvo.network");-->
+    /*
+    winButton.addEventListener("click", ()=> window.location.href="https://screvo.network");
+    */
     winButton.addEventListener("click", () => window.open(window.clickTag, "_blank"));
     restartButton.addEventListener("click", resetGame);
 
@@ -260,6 +274,7 @@
   </script>
 </body>
 </html>
+
 
 
 
