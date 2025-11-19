@@ -11,7 +11,6 @@
   <title>Dino Run</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Saira:wght@100;300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
   
   <style>
     body {
@@ -63,10 +62,10 @@
     playerImage.src = "player.png"
 
     const obsImage = new Image();
-    obsImage.src = "obs.svg"
+    obsImage.src = "obs.png"
 
     const cloudImage = new Image();
-    cloudImage.src = "obs.svg" 
+    cloudImage.src = "cloud.svg" 
 
     const groundImage = new Image();
     groundImage.src = "ground.png";
@@ -175,6 +174,7 @@
       }
     }
 
+    /*
     function resetGame() {
       obstacles = [];
       score = 0;
@@ -188,6 +188,7 @@
       startButton.style.display = "block";
       positionButtons([]);
     }
+    */
 
     function positionButtons(buttons) {
       const spacing = 20;
@@ -324,6 +325,7 @@
   </script>
 </body>
 </html>
+
 
 
 
