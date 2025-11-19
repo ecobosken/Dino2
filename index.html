@@ -100,6 +100,7 @@
     let gameStarted = false;
 
     resizeCanvas();
+    initGrounds();
 
     function spawnObstacle() {
       const baseHeight = 128; // alapmagasság
@@ -114,7 +115,7 @@
 
     function spawnGround() {
       grounds.push({
-        x: math.round(canvasWidth),
+        x: canvasWidth,
         y: groundY + player.height,
         width: groundWidth,
         height: groundHeight
@@ -131,6 +132,20 @@
         const g = grounds[i];
         g.x -= groundSpeed;
         if (g.x + g.width < 0) grounds.splice(i, 1);
+      }
+    }
+
+    function initGrounds() {
+      grounds = [];
+      let x = 0;
+      while (x < canvasWidth) {
+        grounds.push({
+          x: x,
+          y: groundY,       // ideiglenes, később korrigáljuk
+          width: groundWidth,
+          height: groundHeight
+        });
+        x += groundWidth;
       }
     }
 
@@ -274,6 +289,7 @@
   </script>
 </body>
 </html>
+
 
 
 
