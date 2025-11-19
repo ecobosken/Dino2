@@ -114,9 +114,10 @@
     }
 
     function spawnGround() {
+      let lastX = grounds.length > 0 ? grounds[grounds.length - 1].x + groundWidth : 0;
       grounds.push({
-        x: canvasWidth,
-        y: groundY + player.height,
+        x: lastX,
+        y: groundY,
         width: groundWidth,
         height: groundHeight
         });
@@ -289,6 +290,7 @@
   </script>
 </body>
 </html>
+
 
 
 
