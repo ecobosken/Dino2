@@ -63,7 +63,10 @@
     playerImage.src = "player.png"
 
     const obsImage = new Image();
-    obsImage.src = "obs.png"
+    obsImage.src = "obs.svg"
+
+    const cloudImage = new Image();
+    cloudImage.src = "obs.svg" 
 
     const groundImage = new Image();
     groundImage.src = "ground.png";
@@ -122,6 +125,16 @@
       });
     }
 
+    function spawnCloud() {
+      const randomHeight = 100*(0.7 + Math.random() * 0.5); // random 70-120px magasság
+      obstacles.push({
+        x: canvasWidth,
+        y: groundY - randomHeight,
+        width: 256,
+        height: 64
+      });
+    }
+    
     function spawnGround(initial=false) {
      // Ha van már talaj, az új darab az utolsó után kezdődik
      // Ha nincs (init), az x=0
@@ -299,7 +312,6 @@
       gameStarted = true;           // játék elindul
       startButton.style.display = "none";  // gomb eltűnik
       initGrounds();                // talaj inicializálása
-      resetGame();                  // játék reset (opcionális, ha startkor mindent újra akarsz)
     });
 
     startButton.style.display = "block";
@@ -307,6 +319,7 @@
   </script>
 </body>
 </html>
+
 
 
 
