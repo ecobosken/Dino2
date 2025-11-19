@@ -36,7 +36,7 @@
       border: 2px solid white;
       padding: 16px 32px;
       font-family: 'Saira', sans-serif;
-      font-weight: 400;
+      font-weight: 700;
       font-size: 24px;
       border-radius: 16px;
       cursor: pointer;
@@ -47,8 +47,7 @@
   
 <body>
   <canvas id="gameCanvas"></canvas>
-  <button id="winButton" class="gameButton">Tovább</button>
-  <button id="restartButton" class="gameButton">Restart</button>
+  <button id="nextButton" class="gameButton">Tovább</button>
   <button id="startButton" class="gameButton" style="display:block;">START</button>
 
 
@@ -57,8 +56,7 @@
     const ctx = canvas.getContext("2d");
     
     // Gombok
-    const winButton = document.getElementById("winButton");
-    const restartButton = document.getElementById("restartButton");
+    const nextButton = document.getElementById("nextButton");
     const startButton = document.getElementById("startButton");
     
     const playerImage = new Image();
@@ -173,8 +171,8 @@
       player.vy = 0;
       player.onGround = true;
       obstacleTimer = 0;
-      winButton.style.display = "none";
-      restartButton.style.display = "none";
+      nextButton.style.display = "none";
+      startButton.style.display = "block";
       positionButtons([]);
     }
 
@@ -220,8 +218,8 @@
           player.y + player.height > obs.y
         ) {
           gameStarted = false;
-          positionButtons([restartButton]);
-          restartButton.style.display = "block";
+          positionButtons([nextButton]);
+          nextButton.style.display = "block";
           return;
         }
 
@@ -232,9 +230,8 @@
             gameWon = true;
             setTimeout(() => {
               gameStarted = false;
-              winButton.style.display = "block";
-              restartButton.style.display = "block";
-              positionButtons([restartButton, winButton]);
+              nextButton.style.display = "block";
+              positionButtons([nextButton]);
             }, 500);
           }
         }
@@ -294,14 +291,13 @@
     document.addEventListener("touchstart", jump);
 
     /*
-    winButton.addEventListener("click", ()=> window.location.href="https://screvo.network");
+    nextButton.addEventListener("click", ()=> window.location.href="https://screvo.network");
     */
-    winButton.addEventListener("click", () => window.open(window.clickTag, "_blank"));
-    restartButton.addEventListener("click", resetGame);
+    nextButton.addEventListener("click", () => window.open(window.clickTag, "_blank"));
     
     startButton.addEventListener("click", () => {
       gameStarted = true;           // játék elindul
-      // startButton.style.display = "none";  // gomb eltűnik
+      startButton.style.display = "none";  // gomb eltűnik
       initGrounds();                // talaj inicializálása
       resetGame();                  // játék reset (opcionális, ha startkor mindent újra akarsz)
     });
@@ -311,6 +307,7 @@
   </script>
 </body>
 </html>
+
 
 
 
