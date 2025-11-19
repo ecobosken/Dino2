@@ -30,7 +30,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translateY(-50%, -50%);
+      transform: translate(-50%, -50%);
       background-color: #CD001A;
       color: white;
       border: 2px solid white;
@@ -306,10 +306,12 @@
       resetGame();                  // játék reset (opcionális, ha startkor mindent újra akarsz)
     });
 
+    startButton.style.display = "block";
     gameLoop();
   </script>
 </body>
 </html>
+
 
 
 
