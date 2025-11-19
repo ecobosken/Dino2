@@ -113,22 +113,32 @@
       });
     }
 
-    function spawnGround() {
-      let lastX = grounds.length > 0 ? grounds[grounds.length - 1].x + groundWidth : 0;
-      grounds.push({
-        x: lastX,
-        y: groundY,
-        width: groundWidth,
-        height: groundHeight
-        });
-      }
+    function spawnGround(initial=false) {
+     // Ha van már talaj, az új darab az utolsó után kezdődik
+     // Ha nincs (init), az x=0
+     let lastX = 0;
+     if (grounds.length > 0) {
+     const lastGround = grounds[grounds.length - 1];
+     lastX = lastGround.x + lastGround.width;
+     } else if (!initial) {
+     lastX = canvasWidth; // ha nem inicializálunk, a canvas szélén kezdjük
+     }
+
+     grounds.push({
+     x: lastX,
+     y: groundY,
+     width: groundWidth,
+     height: groundHeight
+     });
+     }
 
     function updateGrounds() {
-    // Spawn új talaj, ha nincs vagy az utolsó távol van
-      if (grounds.length === 0 || grounds[grounds.length - 1].x < canvasWidth - groundWidth) {
-        spawnGround();
+       // Spawn új talaj, ha az utolsó még nem fedi le a képernyőt
+      if (grounds.length === 0 || grounds[grounds.length - 1].x + groundWidth < canvasWidth) {
+        spawnGround(); // most már mindig az utolsó darab után kerül
       }
 
+      // Mozgatás
       for (let i = grounds.length - 1; i >= 0; i--) {
         const g = grounds[i];
         g.x -= groundSpeed;
@@ -138,15 +148,8 @@
 
     function initGrounds() {
       grounds = [];
-      let x = 0;
-      while (x < canvasWidth) {
-        grounds.push({
-          x: x,
-          y: groundY,       // ideiglenes, később korrigáljuk
-          width: groundWidth,
-          height: groundHeight
-        });
-        x += groundWidth;
+      while (grounds.length === 0 || grounds[grounds.length - 1].x < canvasWidth) {
+        spawnGround(true); // true → kezdő spawn, x=0-tól fűz
       }
     }
 
@@ -290,6 +293,7 @@
   </script>
 </body>
 </html>
+
 
 
 
