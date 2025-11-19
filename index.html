@@ -114,7 +114,7 @@
 
     function spawnGround() {
       grounds.push({
-        x: canvasWidth,
+        x: math.round(canvasWidth),
         y: groundY + player.height,
         width: groundWidth,
         height: groundHeight
@@ -274,6 +274,7 @@
   </script>
 </body>
 </html>
+
 
 
 
