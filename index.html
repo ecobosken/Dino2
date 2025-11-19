@@ -29,7 +29,8 @@
     .gameButton {
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
+      left: 50%;
+      transform: translateY(-50%, -50%);
       background-color: #CD001A;
       color: white;
       border: 2px solid white;
@@ -285,7 +286,6 @@
       if (player.onGround && !gameWon) {
         player.vy = player.jumpPower;
         player.onGround = false;
-        gameStarted = true;
       }
     }
 
@@ -301,7 +301,7 @@
     
     startButton.addEventListener("click", () => {
       gameStarted = true;           // játék elindul
-      startButton.style.display = "none";  // gomb eltűnik
+      // startButton.style.display = "none";  // gomb eltűnik
       initGrounds();                // talaj inicializálása
       resetGame();                  // játék reset (opcionális, ha startkor mindent újra akarsz)
     });
@@ -310,6 +310,7 @@
   </script>
 </body>
 </html>
+
 
 
 
