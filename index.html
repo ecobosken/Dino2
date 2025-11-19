@@ -115,7 +115,7 @@
 
     function spawnGround() {
       grounds.push({
-        x: Math.round(canvasWidth),
+        x: canvasWidth,
         y: groundY + player.height,
         width: groundWidth,
         height: groundHeight
@@ -236,7 +236,7 @@
         ctx.drawImage(
           groundImage, 
           Math.round(g.x), 
-          Math.round(g.y + player.height), 
+          g.y + player.height, 
           g.width, 
           g.height
         )
@@ -289,6 +289,7 @@
   </script>
 </body>
 </html>
+
 
 
 
