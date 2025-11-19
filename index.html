@@ -9,6 +9,9 @@
   </script>
   
   <title>Dino Run</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@100;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   
   <style>
     body {
@@ -27,12 +30,14 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background-color: blue;
+      background-color: #CD001A;
       color: white;
-      border: none;
-      padding: 15px 30px;
-      font-size: 20px;
-      border-radius: 10px;
+      border: 2px solid white;
+      padding: 16px 32px;
+      font-family: 'Saira', sans-serif;
+      font-weight: 400;
+      font-size: 24px;
+      border-radius: 16px;
       cursor: pointer;
       display: none;
     }
@@ -43,12 +48,17 @@
   <canvas id="gameCanvas"></canvas>
   <button id="winButton" class="gameButton">Tovább</button>
   <button id="restartButton" class="gameButton">Restart</button>
+  <button id="startButton" class="gameButton" style="display:block;">START</button>
+
 
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+    
+    // Gombok
     const winButton = document.getElementById("winButton");
     const restartButton = document.getElementById("restartButton");
+    const startButton = document.getElementById("startButton");
     
     const playerImage = new Image();
     playerImage.src = "player.png"
@@ -288,11 +298,19 @@
     */
     winButton.addEventListener("click", () => window.open(window.clickTag, "_blank"));
     restartButton.addEventListener("click", resetGame);
+    
+    startButton.addEventListener("click", () => {
+      gameStarted = true;           // játék elindul
+      startButton.style.display = "none";  // gomb eltűnik
+      initGrounds();                // talaj inicializálása
+      resetGame();                  // játék reset (opcionális, ha startkor mindent újra akarsz)
+    });
 
     gameLoop();
   </script>
 </body>
 </html>
+
 
 
 
