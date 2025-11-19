@@ -306,6 +306,7 @@
 
       // Felhők
       clouds.forEach(c => ctx.drawImage(cloudImage, c.x, c.y, c.width, c.height));
+      ctx.drawImage(cloudImage, 200, 200, 256, 64);
 
       // Pontok
       ctx.fillStyle = "white";
@@ -337,11 +338,11 @@
       gameStarted = true;           // játék elindul
       startButton.style.display = "none";  // gomb eltűnik
       initGrounds();                // talaj inicializálása
-      player.y = groundY;
+      /* player.y = groundY;
       player.vy = 0;
       player.onGround = true;
       obstacles = [];
-      score = 0;
+      score = 0; */
     });
 
     startButton.style.display = "block";
@@ -349,6 +350,7 @@
   </script>
 </body>
 </html>
+
 
 
 
