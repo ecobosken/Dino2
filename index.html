@@ -105,6 +105,11 @@
     let groundWidth = 64;
     let groundHeight = 64;
     const groundSpeed = obstacleSpeed;
+
+    let clouds = [];
+    let cloudTimer = 0;
+    let cloudInterval = 60; // induló intervallum
+    const cloudSpeed = obstacleSpeed / 2; // fele az akadály sebességének
     
     let score = 0;
     let gameWon = false;
@@ -125,13 +130,19 @@
     }
 
     function spawnCloud() {
-      const randomHeight = 100*(0.7 + Math.random() * 0.5); // random 70-120px magasság
-      obstacles.push({
+      const minHeight = 50;                  // a teteje
+      const maxHeight = groundY - 64 - 20;   // talaj felett kb 20px
+      const randomY = minHeight + Math.random() * (maxHeight - minHeight);
+
+      clouds.push({
         x: canvasWidth,
-        y: groundY - randomHeight,
-        width: 256,
-        height: 64
+        y: randomY,
+        width: 256,    // tetszőleges felhő szélesség
+        height: 64     // tetszőleges felhő magasság
       });
+
+      // következő spawn frame random 60-120 között
+      cloudInterval = 60 + Math.floor(Math.random() * 61);
     }
     
     function spawnGround(initial=false) {
@@ -214,6 +225,20 @@
         player.onGround = true;
       }
 
+      // Cloud spawn
+      cloudTimer++;
+      if (cloudTimer >= cloudInterval) {
+        spawnCloud();
+        cloudTimer = 0;
+      }
+
+      // Cloud mozgatás
+      for (let i = clouds.length - 1; i >= 0; i--) {
+        const c = clouds[i];
+        c.x -= cloudSpeed;
+        if (c.x + c.width < 0) clouds.splice(i, 1);
+      }
+        
       obstacleTimer++;
       if (obstacleTimer >= obstacleInterval) {
         spawnObstacle();
@@ -279,6 +304,9 @@
       // Akadályok
       obstacles.forEach(obs => ctx.drawImage(obsImage, obs.x, obs.y, obs.width, obs.height));
 
+      // Felhők
+      clouds.forEach(c => ctx.drawImage(cloudImage, c.x, c.y, c.width, c.height));
+
       // Pontok
       ctx.fillStyle = "white";
       ctx.font = `${Math.floor(canvasHeight * 0.05)}px Arial`; // méret a canvas magasságához
@@ -300,15 +328,11 @@
       }
     }
 
+   // EVENT LISTENERS
     document.addEventListener("keydown", jump);
     document.addEventListener("mousedown", jump);
     document.addEventListener("touchstart", jump);
-
-    /*
-    nextButton.addEventListener("click", ()=> window.location.href="https://screvo.network");
-    */
     nextButton.addEventListener("click", () => window.open(window.clickTag, "_blank"));
-    
     startButton.addEventListener("click", () => {
       gameStarted = true;           // játék elindul
       startButton.style.display = "none";  // gomb eltűnik
@@ -325,6 +349,7 @@
   </script>
 </body>
 </html>
+
 
 
 
