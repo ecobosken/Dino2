@@ -133,12 +133,15 @@
       const minHeight = 50;                  // a teteje
       const maxHeight = groundY - 64 - 20;   // talaj felett kb 20px
       const randomY = minHeight + Math.random() * (maxHeight - minHeight);
+      const scale = 0.5 + Math.random();  // 0.5–1.5
+      const cloudWidth = 256 * scale;
+      const cloudHeight = 64 * scale;
 
       clouds.push({
         x: canvasWidth,
         y: randomY,
-        width: 256,    // tetszőleges felhő szélesség
-        height: 64     // tetszőleges felhő magasság
+        width: cloudWidth,
+        height: cloudHeight
       });
 
       // következő spawn frame random 60-120 között
@@ -282,6 +285,9 @@
     function draw() {
       ctx.clearRect(0,0,canvasWidth,canvasHeight);
 
+      // Felhők
+      clouds.forEach(c => ctx.drawImage(cloudImage, c.x, c.y, c.width, c.height));
+      
       // Talaj
       grounds.forEach(g => 
         ctx.drawImage(
@@ -303,10 +309,6 @@
 
       // Akadályok
       obstacles.forEach(obs => ctx.drawImage(obsImage, obs.x, obs.y, obs.width, obs.height));
-
-      // Felhők
-      clouds.forEach(c => ctx.drawImage(cloudImage, c.x, c.y, c.width, c.height));
-      ctx.drawImage(cloudImage, 200, 200, 256, 64);
 
       // Pontok
       ctx.fillStyle = "white";
@@ -350,27 +352,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
