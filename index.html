@@ -81,16 +81,13 @@
     pointer-events: none;  /* a kattintásokat átengedi a canvas-nak */
   ">
 
-  <button id="nextButton" class="gameButton">Tovább</button>
-  <button id="startButton" class="gameButton" style="display:block;">INDULJON</button>
-
+  <button id="startButton" class="gameButton" style="display:block;">START</button>
 
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
     
     // Gombok
-    const nextButton = document.getElementById("nextButton");
     const startButton = document.getElementById("startButton");
     
     // Képek betöltése
@@ -146,6 +143,7 @@
       gravity: 0.5, 
       onGround: true 
     };
+	
 	const colliderPadding = 30;
 	
 	let frameWidth = 64;          // sprite frame szélessége
@@ -359,9 +357,7 @@
           player.y + player.height > obs.y
         ) {
           gameStarted = false;
-		  showMessage("Folytasd a játékot a Screvo Appban"); // új üzenet
-          positionButtons([nextButton]);
-          nextButton.style.display = "block";
+		  showMessage("Folytasd a játékot a Screvo Appban!"); // vesztes üzenet
           return;
         }
 
@@ -373,8 +369,6 @@
             setTimeout(() => {
               gameStarted = false;
 			  showMessage("Folytasd a játékot a Screvo Appban");   // nyertes üzenet
-			  positionButtons([nextButton]);
-              nextButton.style.display = "block";
             }, 500);
           }
         }
@@ -466,7 +460,6 @@
     document.addEventListener("mousedown", jump);
     document.addEventListener("touchstart", jump);
 	
-    nextButton.addEventListener("click", () => window.open(window.clickTag, "_blank"));
     startButton.addEventListener("click", () => {
       gameStarted = true;           // játék elindul
       startButton.style.display = "none";  // gomb eltűnik
