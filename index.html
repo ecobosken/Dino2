@@ -53,7 +53,7 @@
     <!-- Üzenet a gomb fölött -->
   <div id="message" style="
     position: absolute;
-    top: 25%;        /* gomb felett */
+    top: 25%;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Saira', sans-serif;
@@ -74,10 +74,10 @@
   ">
   
   <img id="screvoLogo" src="screvo_logo.png" style="
-    position: absolute;
+    position: absolute; 
     top: 3%;
 	right: 2%;
-    z-index: 1000;        /* minden más fölé kerül */
+    z-index: 1000;        <!-- minden más fölé kerül -->
     pointer-events: none;  /* a kattintásokat átengedi a canvas-nak */
   ">
 
@@ -112,7 +112,7 @@
 	
 	// 11. spawnhoz fix akadály
 	const specialObstacle = new Image();
-	specialObstacle.src = "obs4.png";
+	specialObstacle.src = "chips_lila.png";
 
 	let spawnCount = 0;  // számláló a spawnokhoz
 
@@ -199,22 +199,33 @@
 	  if (spawnCount === 11) {
 		// 11. spawn mindig obs4
 		img = specialObstacle;
+		const specialheight = 300;
+
+	  obstacles.push({
+		x: canvasWidth,
+		y: groundY + player.height - (specialheight + 8),
+		height: specialheight,
+		width: specialheight / 2,
+		img: img
+	  });
+		
 	  } else {
 		// Az első 10 spawn az első 3 kép közül választ
 		const randomIndex = Math.floor(Math.random() * 3); 
 		img = obstacleImages[randomIndex];
-	  }
-
-	  const baseHeight = 128;
-	  const height = baseHeight * (0.8 + Math.random() * 0.4);
+		const baseHeight = 128;
+		const height = baseHeight * (0.8 + Math.random() * 0.4);
 
 	  obstacles.push({
 		x: canvasWidth,
 		y: groundY + player.height - height,
-		width: 64,
 		height: height,
+		width: height / 2,
 		img: img
 	  });
+	  }
+
+
 	}
 
     function spawnCloud() {
@@ -348,7 +359,7 @@
           player.y + player.height > obs.y
         ) {
           gameStarted = false;
-		  showMessage("Majd legközelebb"); // új üzenet
+		  showMessage("Folytasd a játékot a Screvo Appban"); // új üzenet
           positionButtons([nextButton]);
           nextButton.style.display = "block";
           return;
@@ -361,7 +372,7 @@
             gameWon = true;
             setTimeout(() => {
               gameStarted = false;
-			  showMessage("Nyertél!");   // nyertes üzenet
+			  showMessage("Folytasd a játékot a Screvo Appban");   // nyertes üzenet
 			  positionButtons([nextButton]);
               nextButton.style.display = "block";
             }, 500);
@@ -464,7 +475,7 @@
     });
 
     startButton.style.display = "block";
-	showMessage("Ugord át az akadályokat és nyerj!");
+	showMessage("Ugord át az akadályokat és kaparintsd meg a Chio intenset!");
     gameLoop();
   </script>
 </body>
